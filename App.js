@@ -6,7 +6,6 @@ import {
   Text,
   View,
   TextInput,
-  Image,
   Alert,
   KeyboardAvoidingView,
 } from "react-native";
@@ -17,6 +16,9 @@ import ChatStripe from "./comp/ChatStripe";
 
 let loadInterval;
 
+// these 3 functions below need to be changed in order to work properly in react-native
+
+//should simulate the AI to 'think' as long as data are being fetched
 function loader(e) {
   e.textContent = "";
 
@@ -29,6 +31,7 @@ function loader(e) {
   }, 300);
 }
 
+//function to type the ansered text letter by letter
 function typeText(e, t) {
   let index = 0;
 
@@ -42,6 +45,7 @@ function typeText(e, t) {
   }, 20);
 }
 
+// maybe not needed with a flatlist? gives every message/answer unique id's
 function generateUniqueId() {
   const timestamp = Date.now();
   const randomNumber = Math.random();
