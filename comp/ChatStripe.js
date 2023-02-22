@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet } from "react-native";
 // import SvgUri from "react-native-svg";
 
 const ChatStripe = ({ isAi, value, style }) => {
+  //these SVG's are not displaying correctly
   const bot = require("../assets/bot.svg");
   const user = require("../assets/user.svg");
 

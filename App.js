@@ -50,7 +50,6 @@ function generateUniqueId() {
   const timestamp = Date.now();
   const randomNumber = Math.random();
   const hexadecimalString = randomNumber.toString(16);
-
   return `id-${timestamp}-${hexadecimalString}`;
 }
 
@@ -119,6 +118,7 @@ export default function App() {
           <SafeAreaView style={styles.container}>
             <StatusBar style="light" />
             {result ? (
+              // past chat messages and user questions are not visible
               <ChatStripe style={styles.chat} isAi={isAi} value={result} />
             ) : (
               <Text style={styles.label}>AI Code-G</Text>
@@ -132,7 +132,7 @@ export default function App() {
                 style={styles.input}
                 onChangeText={setInput}
               ></TextInput>
-
+              {/* SendButton moves right when having a longer input value. The TextInput should grow instead*/}
               <SendButton
                 style={{ marginRight: 15 }}
                 icon="send"
