@@ -94,6 +94,7 @@ export default function App() {
       console.log({ parsedData });
 
       setIsAi(true);
+      setInput("");
       setResult(parsedData);
     } catch (err) {
       // const errorRes = await err.message();
