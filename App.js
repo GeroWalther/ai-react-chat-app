@@ -8,6 +8,7 @@ import {
   TextInput,
   Image,
   Alert,
+  KeyboardAvoidingView,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
@@ -108,40 +109,45 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
-        <StatusBar style="light" />
-        {result ? (
-          <ScrollView>
-            <ChatStripe style={styles.chat} isAi={isAi} value={result} />
-          </ScrollView>
-        ) : (
-          <Text style={styles.label}>AI Code-G</Text>
-        )}
-        <View style={styles.inputCon}>
-          <TextInput
-            placeholder="Ask me something..."
-            placeholderTextColor={"#878787"}
-            keyboardType="web-search"
-            value={input}
-            style={styles.input}
-            onChangeText={setInput}
-          ></TextInput>
+    <ScrollView style={styles.screen}>
+      <KeyboardAvoidingView style={styles.screen} behavior="position">
+        <SafeAreaProvider>
+          <SafeAreaView style={styles.container}>
+            <StatusBar style="light" />
+            {result ? (
+              <ChatStripe style={styles.chat} isAi={isAi} value={result} />
+            ) : (
+              <Text style={styles.label}>AI Code-G</Text>
+            )}
+            <View style={styles.inputCon}>
+              <TextInput
+                placeholder="Ask me something..."
+                placeholderTextColor={"#878787"}
+                keyboardType="web-search"
+                value={input}
+                style={styles.input}
+                onChangeText={setInput}
+              ></TextInput>
 
-          <SendButton
-            style={{ marginRight: 15 }}
-            icon="send"
-            size={24}
-            color={"white"}
-            onPress={onSend}
-          />
-        </View>
-      </SafeAreaView>
-    </SafeAreaProvider>
+              <SendButton
+                style={{ marginRight: 15 }}
+                icon="send"
+                size={24}
+                color={"white"}
+                onPress={onSend}
+              />
+            </View>
+          </SafeAreaView>
+        </SafeAreaProvider>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: "#2e3045",
@@ -153,7 +159,7 @@ const styles = StyleSheet.create({
     marginBottom: 100,
     color: "#e9e9e9",
     fontSize: 16,
-    marginTop: "auto",
+    marginTop: 590,
     marginLeft: 150,
   },
   inputCon: {
