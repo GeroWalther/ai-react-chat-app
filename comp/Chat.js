@@ -3,15 +3,16 @@ import {
   Text,
   View,
   ActivityIndicator,
-  ScrollView,
   TextInput,
+  KeyboardAvoidingView,
+  FlatList,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SendButton from "../ui/SendButton";
 
 import ChatStripe from "./ChatStripe";
 
-//function to type the ansered text letter by letter
+//FIXME function to type the ansered text letter by letter to have a better user expierience - not implemented yet.
 function typeText(e, t) {
   let index = 0;
 
@@ -25,18 +26,16 @@ function typeText(e, t) {
   }, 20);
 }
 
-// maybe not needed with a flatlist? gives every message/answer unique id's
 function generateUniqueId() {
   const timestamp = Date.now();
   const randomNumber = Math.random();
   const hexadecimalString = randomNumber.toString(16);
-  return `id-${timestamp}-${hexadecimalString}`;
+  return `${timestamp}-${hexadecimalString}`;
 }
 
 function Chat() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState("");
-  const [isAi, setIsAi] = useState(false);
   const [input, setInput] = useState("");
   const [chat, setChat] = useState([]);
 
@@ -60,7 +59,11 @@ function Chat() {
       return;
     }
     setLoading(true);
-
+    setChat((prev) => [
+      ...prev,
+      { msg: input, id: generateUniqueId(), isAi: false },
+    ]);
+    setInput("");
     try {
       const response = await fetch(
         "https://exxpress-server-for-ai-chat-app.onrender.com",
@@ -74,40 +77,52 @@ function Chat() {
           }),
         }
       );
-
       const data = await response.json();
       const parsedData = data.bot.trim();
-      console.log({ parsedData });
-
-      setIsAi(true);
-      setInput("");
       setResult(parsedData);
+      setChat((prev) => [
+        ...prev,
+        { msg: parsedData, id: generateUniqueId(), isAi: true },
+      ]);
     } catch (err) {
-      // const errorRes = await err.message();
+      //FIXME: showAlert not properly showing. Needs Error handling.
+      const errorRes = await err.message();
       console.log(err.message);
       setResult("Something went wrong");
-
-      // showAlert(errorRes);
+      showAlert(errorRes);
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <>
-      <ScrollView contentContainerStyle={{ flex: 1 }} style={styles.screen}>
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          {!loading ? (
-            <Text style={styles.label}>AI Code-G</Text>
-          ) : (
-            <ActivityIndicator />
-          )}
-          {result && (
-            // past chat messages and user questions are not visible
-            <ChatStripe style={styles.chat} isAi={isAi} value={result} />
-          )}
-        </View>
-      </ScrollView>
+    <KeyboardAvoidingView
+      contentContainerStyle={styles.screen}
+      style={styles.screen}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      enabled
+      keyboardVerticalOffset={Platform.OS === "ios" ? 95 : 110}
+    >
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        {!result && <Text style={styles.label}>AI Code-G</Text>}
+        {loading && <ActivityIndicator />}
+        {result && (
+          <FlatList
+            style={styles.flat}
+            data={chat}
+            renderItem={({ item }) => (
+              <ChatStripe
+                key={item.id}
+                style={styles.chat}
+                isAi={item.isAi}
+                value={item.msg}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        )}
+      </View>
+
       <View style={styles.inputCon}>
         <TextInput
           placeholder="Ask me something..."
@@ -119,7 +134,6 @@ function Chat() {
           multiline
           textAlignVertical="top"
         />
-        {/* SendButton moves right when having a longer input value. The TextInput should grow instead*/}
         <SendButton
           style={{ marginRight: 15 }}
           icon="send"
@@ -128,7 +142,7 @@ function Chat() {
           onPress={onSend}
         />
       </View>
-    </>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -139,13 +153,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   screen: {
+    flex: 1,
     backgroundColor: "#2e3045",
   },
   label: {
-    marginBottom: 100,
+    margin: 20,
     color: "#e9e9e9",
     fontSize: 16,
-    marginLeft: 150,
+    marginLeft: 155,
   },
   inputCon: {
     flexDirection: "row",
@@ -165,5 +180,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     borderColor: "#090d30",
     borderWidth: 1,
+    maxHeight: 150,
   },
 });

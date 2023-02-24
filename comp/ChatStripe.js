@@ -3,18 +3,23 @@ import { View, Text, Image, StyleSheet } from "react-native";
 import SvgUri from "react-native-svg";
 
 const ChatStripe = ({ isAi, value, style }) => {
-  //these SVG's are not displaying correctly
-  const bot = require("../assets/bot.svg");
-  const user = require("../assets/user.svg");
-
-  const imageSource = isAi ? bot : user;
+  //FIXME: still svg's are not showing properly
+  const imageSource = isAi
+    ? require("../assets/bot.svg")
+    : require("../assets/user.svg");
 
   return (
-    <View style={style}>
+    <View style={[style, isAi && styles.aiBackgroundTxt]}>
       <View style={styles.con}>
-        <View style={styles.con2}>
-          <SvgUri source={imageSource} style={styles.img} />
-        </View>
+        {/* <View style={styles.con2}>
+          <SvgUri
+            uri={imageSource}
+            style={[
+              styles.img,
+              isAi ? styles.aiBackground : styles.userBackground,
+            ]}
+          />
+        </View> */}
         <View style={{ flex: 1 }}>
           <Text style={styles.title}>{isAi ? "AI-Bot" : "User"}</Text>
           <Text style={styles.valueText}>{value}</Text>
@@ -29,6 +34,7 @@ const styles = StyleSheet.create({
   con: {
     flexDirection: "row",
     alignItems: "flex-start",
+    padding: 10,
   },
   con2: { marginRight: 10 },
   valueText: {
@@ -36,12 +42,21 @@ const styles = StyleSheet.create({
     color: "white",
   },
   img: {
-    width: 70,
-    height: 70,
-    backgroundColor: "bot" ? "green" : "blue",
+    width: 50,
+    height: 50,
   },
   title: {
     fontWeight: "bold",
     color: "#cacaca",
+    marginBottom: 4,
+  },
+  aiBackground: {
+    backgroundColor: "green",
+  },
+  userBackground: {
+    backgroundColor: "blue",
+  },
+  aiBackgroundTxt: {
+    backgroundColor: "#252d45",
   },
 });
