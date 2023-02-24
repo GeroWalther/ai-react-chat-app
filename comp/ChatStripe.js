@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
-// import SvgUri from "react-native-svg";
+import SvgUri from "react-native-svg";
 
 const ChatStripe = ({ isAi, value, style }) => {
   //these SVG's are not displaying correctly
@@ -13,7 +13,7 @@ const ChatStripe = ({ isAi, value, style }) => {
     <View style={style}>
       <View style={styles.con}>
         <View style={styles.con2}>
-          <Image source={bot} style={styles.img} />
+          <SvgUri source={imageSource} style={styles.img} />
         </View>
         <View style={{ flex: 1 }}>
           <Text style={styles.title}>{isAi ? "AI-Bot" : "User"}</Text>

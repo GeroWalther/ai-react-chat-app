@@ -1,188 +1,74 @@
 import React, { useState } from "react";
-import { StatusBar } from "expo-status-bar";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
-  ScrollView,
   StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Alert,
   KeyboardAvoidingView,
+  SafeAreaView,
+  Platform,
+  StatusBar,
 } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
-import SendButton from "./ui/SendButton";
-import ChatStripe from "./comp/ChatStripe";
+// import { GiftedChat } from "react-native-gifted-chat";
 
-let loadInterval;
+import LandingScreen from "./comp/LandingScreen";
 
-// these 3 functions below need to be changed in order to work properly in react-native
+import Chat from "./comp/Chat";
 
-//should simulate the AI to 'think' as long as data are being fetched
-function loader(e) {
-  e.textContent = "";
-
-  loadInterval = setInterval(() => {
-    e.textContent += ".";
-
-    if (e.textContent === "....") {
-      e.textContent = "";
-    }
-  }, 300);
-}
-
-//function to type the ansered text letter by letter
-function typeText(e, t) {
-  let index = 0;
-
-  let interval = setInterval(() => {
-    if (index < t.length) {
-      e.innerHTML += t.charAt(index);
-      index++;
-    } else {
-      clearInterval(interval);
-    }
-  }, 20);
-}
-
-// maybe not needed with a flatlist? gives every message/answer unique id's
-function generateUniqueId() {
-  const timestamp = Date.now();
-  const randomNumber = Math.random();
-  const hexadecimalString = randomNumber.toString(16);
-  return `id-${timestamp}-${hexadecimalString}`;
-}
+const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const showAlert = (error) => {
-    Alert.alert(
-      "Something went wrong",
-      error,
-      [
-        {
-          text: "OK",
-          style: "cancel",
-        },
-        { text: "OK", onPress: () => console.log("OK Pressed") },
-      ],
-      { cancelable: false }
-    );
-  };
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState("");
-  const [isAi, setIsAi] = useState(false);
-
-  async function onSend() {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-
-    try {
-      const response = await fetch(
-        "https://exxpress-server-for-ai-chat-app.onrender.com",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            prompt: input,
-          }),
-        }
-      );
-
-      const data = await response.json();
-      const parsedData = data.bot.trim();
-      console.log({ parsedData });
-
-      setIsAi(true);
-      setInput("");
-      setResult(parsedData);
-    } catch (err) {
-      // const errorRes = await err.message();
-      console.log(err.message);
-      setResult("Something went wrong");
-
-      // showAlert(errorRes);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   return (
-    <ScrollView style={styles.screen}>
-      <KeyboardAvoidingView style={styles.screen} behavior="position">
-        <SafeAreaProvider>
-          <SafeAreaView style={styles.container}>
-            <StatusBar style="light" />
-            {result ? (
-              // past chat messages and user questions are not visible
-              <ChatStripe style={styles.chat} isAi={isAi} value={result} />
-            ) : (
-              <Text style={styles.label}>AI Code-G</Text>
-            )}
-            <View style={styles.inputCon}>
-              <TextInput
-                placeholder="Ask me something..."
-                placeholderTextColor={"#878787"}
-                keyboardType="web-search"
-                value={input}
-                style={styles.input}
-                onChangeText={setInput}
-              ></TextInput>
-              {/* SendButton moves right when having a longer input value. The TextInput should grow instead*/}
-              <SendButton
-                style={{ marginRight: 15 }}
-                icon="send"
-                size={24}
-                color={"white"}
-                onPress={onSend}
-              />
-            </View>
-          </SafeAreaView>
-        </SafeAreaProvider>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView
+        contentContainerStyle={styles.screen}
+        style={styles.screen}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        enabled
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 110}
+      >
+        <StatusBar barStyle="light-content" />
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Chat"
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: "#2e3045",
+              },
+              headerTintColor: "#e9e9e9",
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
+            }}
+          >
+            <Stack.Screen
+              name="Chat"
+              component={Chat}
+              options={{ title: "AI Chat Bot" }}
+            />
+            <Stack.Screen
+              name="Landing"
+              component={LandingScreen}
+              options={{ title: "Lets get Started" }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
       </KeyboardAvoidingView>
-    </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-  },
-  container: {
+  Scroll: {
     flex: 1,
     backgroundColor: "#2e3045",
   },
-  chat: {
-    marginBottom: 20,
+  screen: {
+    flex: 1,
+    backgroundColor: "#2e3045",
   },
-  label: {
-    marginBottom: 100,
-    color: "#e9e9e9",
-    fontSize: 16,
-    marginTop: 590,
-    marginLeft: 150,
-  },
-  inputCon: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+  container: {
+    flex: 1,
     backgroundColor: "#090d30",
-    padding: 5,
-    paddingHorizontal: 8,
-    marginBottom: -34,
-  },
-  input: {
-    fontSize: 18,
-    padding: 20,
-    marginTop: 6,
-    marginBottom: 12,
-    borderRadius: 4,
-    color: "#fff",
-    borderColor: "#090d30",
-    borderWidth: 1,
   },
 });

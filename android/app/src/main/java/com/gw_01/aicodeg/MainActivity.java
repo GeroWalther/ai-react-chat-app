@@ -1,6 +1,6 @@
 package com.gw_01.aicodeg;
-
 import android.os.Build;
+
 import android.os.Bundle;
 
 import com.facebook.react.ReactActivity;
