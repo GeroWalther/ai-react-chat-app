@@ -17,7 +17,7 @@ export default function App() {
       <StatusBar barStyle="light-content" />
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Chat"
+          initialRouteName="Landing"
           screenOptions={{
             headerStyle: {
               backgroundColor: "#090d30",
@@ -36,7 +36,7 @@ export default function App() {
           <Stack.Screen
             name="Landing"
             component={LandingScreen}
-            options={{ title: "Lets get Started" }}
+            options={{ title: "Let's get Started" }}
           />
         </Stack.Navigator>
       </NavigationContainer>

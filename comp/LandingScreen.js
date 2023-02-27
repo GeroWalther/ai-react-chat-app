@@ -19,9 +19,14 @@ const LandingScreen = () => {
       <View style={styles.txtCon}>
         <Text style={styles.labTxt}>Email:</Text>
         <TextInput style={styles.TextInput} />
+        <Text style={styles.labTxt}>User Name:</Text>
+        <TextInput style={styles.TextInput} />
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
-        <Text style={styles.btn}>Go to Chat</Text>
+      <TouchableOpacity
+        style={styles.btn}
+        onPress={() => navigation.navigate("Chat")}
+      >
+        <Text style={styles.txtBtn}>Start asking the AI</Text>
       </TouchableOpacity>
     </View>
   );
@@ -33,18 +38,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#2e3045",
+    alignItems: "center",
   },
   TextInput: {
-    padding: 20,
+    padding: 15,
     color: "white",
+    fontSize: 16,
     backgroundColor: "#3d455e",
+    borderRadius: 5,
+    marginBottom: 15,
+    width: 300,
+  },
+  txtCon: {
+    marginTop: 100,
   },
   labTxt: {
     color: "white",
+    marginVertical: 10,
+  },
+  txtBtn: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 22,
   },
   btn: {
-    padding: 20,
+    backgroundColor: "#44d687",
+    padding: 12,
     borderRadius: 20,
-    color: "white",
+    width: 260,
+    marginTop: 50,
+    textAlign: "center",
   },
 });
