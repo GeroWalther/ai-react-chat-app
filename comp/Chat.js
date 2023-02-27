@@ -7,8 +7,10 @@ import {
   KeyboardAvoidingView,
   FlatList,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
+
 import SendButton from "../ui/SendButton";
+import ClearBtn from "../ui/ClearBtn";
 
 import ChatStripe from "./ChatStripe";
 
@@ -33,11 +35,24 @@ function generateUniqueId() {
   return `${timestamp}-${hexadecimalString}`;
 }
 
-function Chat() {
+function Chat({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState("");
   const [input, setInput] = useState("");
   const [chat, setChat] = useState([]);
+
+  function clear() {
+    setResult("");
+    setInput("");
+    setChat([]);
+  }
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return <ClearBtn title="Clear" onPress={clear} />;
+      },
+    });
+  }, []);
 
   const showAlert = (error) => {
     Alert.alert(

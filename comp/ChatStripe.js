@@ -21,7 +21,9 @@ const ChatStripe = ({ isAi, value, style }) => {
           />
         </View> */}
         <View style={{ flex: 1 }}>
-          <Text style={styles.title}>{isAi ? "AI-Bot" : "User"}</Text>
+          {/*//FIXME Needs the actual UserName here
+           */}
+          <Text style={styles.title}>{isAi ? "AI-Bot" : "UserName"}</Text>
           <Text style={styles.valueText}>{value}</Text>
         </View>
       </View>

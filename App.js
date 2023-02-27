@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet, SafeAreaView, Platform, StatusBar } from "react-native";
@@ -15,6 +15,8 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
+      {/* //FIXME Needs to send the user to the chatStripe if logged in and subscribed. No need for a back button.
+       */}
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="Landing"
@@ -36,7 +38,9 @@ export default function App() {
           <Stack.Screen
             name="Landing"
             component={LandingScreen}
-            options={{ title: "Let's get Started" }}
+            options={{
+              title: "Let's get Started",
+            }}
           />
         </Stack.Navigator>
       </NavigationContainer>

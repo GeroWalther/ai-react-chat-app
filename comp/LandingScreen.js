@@ -12,6 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 const windowDimensions = Dimensions.get("window");
 const screenDimensions = Dimensions.get("screen");
 
+// FIXME validation and payment subscription must be added
 const LandingScreen = () => {
   const navigation = useNavigation();
   return (
