@@ -1,49 +1,21 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StyleSheet, SafeAreaView, Platform, StatusBar } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, SafeAreaView, StatusBar } from "react-native";
 
-// import { GiftedChat } from "react-native-gifted-chat";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 
 import LandingScreen from "./comp/LandingScreen";
-
-import Chat from "./comp/Chat";
-
-const Stack = createNativeStackNavigator();
+import Main from "./comp/Main";
 
 export default function App() {
+  // FIXME Use Redux to handle state and implement validation for the login/subscribtion
+  const [loggedin, setLoggedin] = useState(false);
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
-      {/* //FIXME Needs to send the user to the chatStripe if logged in and subscribed. No need for a back button.
-       */}
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Landing"
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: "#090d30",
-            },
-            headerTintColor: "#e9e9e9",
-            headerTitleStyle: {
-              fontWeight: "bold",
-            },
-          }}
-        >
-          <Stack.Screen
-            name="Chat"
-            component={Chat}
-            options={{ title: "AI Chat Bot" }}
-          />
-          <Stack.Screen
-            name="Landing"
-            component={LandingScreen}
-            options={{
-              title: "Let's get Started",
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Provider store={store}>
+        {loggedin ? <LandingScreen /> : <Main />}
+      </Provider>
     </SafeAreaView>
   );
 }

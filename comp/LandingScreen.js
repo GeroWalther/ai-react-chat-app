@@ -7,14 +7,12 @@ import {
   Dimensions,
 } from "react-native";
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
 
 const windowDimensions = Dimensions.get("window");
 const screenDimensions = Dimensions.get("screen");
 
 // FIXME validation and payment subscription must be added
 const LandingScreen = () => {
-  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.txtCon}>
@@ -25,9 +23,10 @@ const LandingScreen = () => {
       </View>
       <TouchableOpacity
         style={styles.btn}
-        onPress={() => navigation.navigate("Chat")}
+        //FIXME add payments subscrption here and set state accordingly to render All Chats afterwords
+        onPress={() => {}}
       >
-        <Text style={styles.txtBtn}>Start asking the AI</Text>
+        <Text style={styles.txtBtn}>Subscribe and Start asking the AI</Text>
       </TouchableOpacity>
     </View>
   );

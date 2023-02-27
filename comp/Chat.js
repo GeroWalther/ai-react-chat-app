@@ -11,6 +11,7 @@ import React, { useState, useLayoutEffect } from "react";
 
 import SendButton from "../ui/SendButton";
 import ClearBtn from "../ui/ClearBtn";
+import SaveBtn from "../ui/SaveBtn";
 
 import ChatStripe from "./ChatStripe";
 
@@ -49,7 +50,13 @@ function Chat({ navigation }) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return <ClearBtn title="Clear" onPress={clear} />;
+        return (
+          <>
+            <ClearBtn title="Clear" onPress={clear} />
+            {/* //FIXME needs a Save function and set the State with Redux */}
+            <SaveBtn title="Save" onPress={() => {}} />
+          </>
+        );
       },
     });
   }, []);
