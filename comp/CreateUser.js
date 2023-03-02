@@ -12,13 +12,13 @@ const windowDimensions = Dimensions.get("window");
 const screenDimensions = Dimensions.get("screen");
 
 // FIXME validation and payment subscription must be added
-const LandingScreen = () => {
+const CreateAccount = () => {
   return (
     <View style={styles.container}>
       <View style={styles.txtCon}>
         <Text style={styles.labTxt}>Email:</Text>
         <TextInput style={styles.TextInput} />
-        <Text style={styles.labTxt}>User Name:</Text>
+        <Text style={styles.labTxt}>Password:</Text>
         <TextInput style={styles.TextInput} />
       </View>
       <TouchableOpacity
@@ -26,13 +26,13 @@ const LandingScreen = () => {
         //FIXME add payments subscrption here and set state accordingly to render All Chats afterwords
         onPress={() => {}}
       >
-        <Text style={styles.txtBtn}>Subscribe and Start asking the AI</Text>
+        <Text style={styles.txtBtn}>Create Account</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default LandingScreen;
+export default CreateAccount;
 
 const styles = StyleSheet.create({
   container: {
